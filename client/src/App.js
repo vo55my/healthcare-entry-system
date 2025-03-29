@@ -5,13 +5,8 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
-  Textarea,
   VStack,
   useToast,
-  Checkbox,
-  CheckboxGroup,
-  Stack,
   Menu,
   MenuButton,
   MenuList,
@@ -32,7 +27,7 @@ const formatCurrency = (value) => {
 
 const parseCurrency = (value) => {
   if (!value) return 0;
-  return parseInt(value.replace(/[^0-9]/g, ''), 10);
+  return parseFloat(value.replace(/[^0-9]/g, ''));
 };
 
 // Sample data for dropdowns
@@ -71,10 +66,6 @@ function App() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (name, values) => {
-    setFormData(prev => ({ ...prev, [name]: values }));
-  };
-
   const handleDropdownChange = (name, values) => {
     setFormData(prev => ({ ...prev, [name]: values }));
   };
@@ -100,11 +91,11 @@ function App() {
       if (formData.prescribedMedication.length === 0) {
         throw new Error('Harap pilih setidaknya satu obat yang diresepkan');
       }
-      if (!formData.treatmentCost || parseFloat(formData.treatmentCost) <= 0) {
+      if (!formData.treatmentCost || formData.treatmentCost <= 0) {
         throw new Error('Harap masukkan biaya pengobatan yang valid');
       }
 
-      const response = await axios.post('http://localhost:5000/api/treatments', formData);
+      await axios.post('http://localhost:5000/api/treatments', formData);
       
       toast({
         title: 'Data berhasil disimpan',
